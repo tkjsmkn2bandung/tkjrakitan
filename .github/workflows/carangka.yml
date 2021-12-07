@@ -1,0 +1,40 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 * * * *'
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 49
+      fail-fast: false
+      matrix:
+        go: [1.6, 1.7, 1.8, 1.9, 1.10]
+        flag: [A, B, C, D, E, F, G, H, I]
+    env:
+        NUM_JOBS: 49
+        JOB: ${{ matrix.go }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Modify LAST_UPDATED file
+        run: |
+          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
+          echo $d > LAST_UPDATED
+      - name: Commit changes
+        run: |
+          git config --local user.email "{developer@smkn2.xyz}"
+          git config --local user.name "{devlopersmkn2}"
+          git add -A
+          git commit -m "Sebuah pesan"
+      - name: Push Back
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          force: true
+          directory: '.'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
