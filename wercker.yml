@@ -1,4 +1,11 @@
-box: ubuntu:16.04
+box: python
+deploy:
+  steps:
+    - internal/docker-push:
+        username: dapurspl
+        password: Bandung#123
+        tag: tagname
+        repository: dapurspl/docker-build-golang
 build:
   steps:
     - script:
